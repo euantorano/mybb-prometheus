@@ -16,8 +16,6 @@ if (!defined('IN_MYBB')) {
 defined('MYBBSTUFF_CORE_PATH') || define('MYBBSTUFF_CORE_PATH', __DIR__ . '/MybbStuff/Core');
 defined('PROMETHEUS_PLUGIN_PATH') || define('PROMETHEUS_PLUGIN_PATH', __DIR__ . '/MybbStuff/Prometheus');
 
-defined('PLUGINLIBRARY') || define('PLUGINLIBRARY', __DIR__ . '/pluginlibrary.php');
-
 defined('MYBBSTUFF_PLUGINS_CACHE_NAME') || define('MYBBSTUFF_PLUGINS_CACHE_NAME', 'mybbstuff_plugins');
 
 require_once MYBBSTUFF_CORE_PATH . '/src/ClassLoader.php';
@@ -58,11 +56,10 @@ function prometheus_install(): void
 {
     global $cache;
 
-    $pluginInfo = prometheus_info();
     $pluginsCache = prometheus_cache_read($cache, MYBBSTUFF_PLUGINS_CACHE_NAME);
-    $pluginsCache['prometheus'] = [
-        'version' => $pluginInfo['version'],
-    ];
+    if (isset($pluginsCache['prometheus'])) {
+        unset($pluginsCache['prometheus']);
+    }
     $cache->update(MYBBSTUFF_PLUGINS_CACHE_NAME, $pluginsCache);
 }
 
@@ -76,58 +73,25 @@ function prometheus_is_installed(): bool
 
 function prometheus_uninstall(): void
 {
-    global $cache, $PL, $lang;
-
-    $lang->load('prometheus');
-
-    if (!file_exists(PLUGINLIBRARY)) {
-        flash_message($lang->prometheus_pluginlibrary_missing, 'error');
-        admin_redirect('index.php?module=config-plugins');
-    }
-
-    $PL or require_once PLUGINLIBRARY;
+    global $cache;
 
     $pluginsCache = prometheus_cache_read($cache, MYBBSTUFF_PLUGINS_CACHE_NAME);
     if (isset($pluginsCache['prometheus'])) {
         unset($pluginsCache['prometheus']);
     }
     $cache->update(MYBBSTUFF_PLUGINS_CACHE_NAME, $pluginsCache);
-
-    $PL->settings_delete('prometheus', true);
 }
 
 function prometheus_activate(): void
 {
-    global $PL, $lang;
+    global $cache;
 
-    $lang->load('prometheus');
-
-    if (!file_exists(PLUGINLIBRARY)) {
-        flash_message($lang->prometheus_pluginlibrary_missing, 'error');
-        admin_redirect('index.php?module=config-plugins');
-    }
-
-    $PL or require_once PLUGINLIBRARY;
-
-    $PL->settings(
-        'prometheus',
-        $lang->setting_group_prometheus,
-        $lang->setting_group_prometheus_desc,
-        [
-            'auth_username' => [
-                'title' => $lang->setting_prometheus_auth_username,
-                'description' => $lang->setting_prometheus_auth_username_desc,
-                'value' => 'prometheus',
-                'optionscode' => 'text',
-            ],
-            'auth_password' => [
-                'title' => $lang->setting_prometheus_auth_password,
-                'description' => $lang->setting_prometheus_auth_password_desc,
-                'value' => 'password',
-                'optionscode' => 'text',
-            ],
-        ]
-    );
+    $pluginInfo = prometheus_info();
+    $pluginsCache = prometheus_cache_read($cache, MYBBSTUFF_PLUGINS_CACHE_NAME);
+    $pluginsCache['prometheus'] = [
+        'version' => $pluginInfo['version'],
+    ];
+    $cache->update(MYBBSTUFF_PLUGINS_CACHE_NAME, $pluginsCache);
 }
 
 function prometheus_deactivate(): void
@@ -135,10 +99,24 @@ function prometheus_deactivate(): void
 
 }
 
-function prometheus_verify_credentials(MyBB $mybb, ?string $user, ?string $password): bool
+function prometheus_needs_basic_auth(): bool
 {
-    return hash_equals($mybb->settings['prometheus_username'], $user) &&
-        hash_equals($mybb->settings['prometheus_password'], $password);
+    return isset($_ENV['PROMETHEUS_PASSWORD']);
+}
+
+function prometheus_verify_credentials(): bool
+{
+    $user = 'prometheus';
+    if (!empty($_ENV['PROMETHEUS_USER'])) {
+        $user = $_ENV['PROMETHEUS_USER'];
+    }
+
+    if (!isset($_ENV['PROMETHEUS_PASSWORD'])) {
+        return false;
+    }
+
+    return hash_equals($user, $_SERVER['PHP_AUTH_USER']) &&
+        hash_equals($_ENV['PROMETHEUS_PASSWORD'], $_SERVER['PHP_AUTH_PW']);
 }
 
 $plugins->add_hook('misc_start', 'prometheus_metrics');
@@ -150,8 +128,8 @@ function prometheus_metrics(): void
         return;
     }
 
-    if (!isset($_SERVER['PHP_AUTH_USER']) ||
-        !prometheus_verify_credentials($mybb, $_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])) {
+    if (prometheus_needs_basic_auth() &&
+        (!isset($_SERVER['PHP_AUTH_USER']) || !prometheus_verify_credentials())) {
         header('WWW-Authenticate: Basic realm="Prometheus Metrics"');
         header('HTTP/1.0 401 Unauthorized');
 
