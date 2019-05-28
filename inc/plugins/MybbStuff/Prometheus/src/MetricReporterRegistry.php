@@ -59,16 +59,8 @@ class MetricReporterRegistry implements ArrayAccess, Countable
     {
         $output = '';
 
-        $anyMetrics = false;
-
         foreach ($this->getMetrics() as $metric) {
             $output .= $metric->render();
-
-            $anyMetrics = true;
-        }
-
-        if (!$anyMetrics) {
-            return "\n";
         }
 
         return $output;

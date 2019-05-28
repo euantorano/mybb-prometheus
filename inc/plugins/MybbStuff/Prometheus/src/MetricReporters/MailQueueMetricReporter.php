@@ -26,7 +26,7 @@ class MailQueueMetricReporter extends CacheBasedMetricReporter
 
         if (isset($mailQueueCache['queue_size'])) {
             $metric = (new Metric('mybb_mail_queue_size', Metric::TYPE_GAUGE))
-                ->setHelp('The number of messages waiting in the mail queue')
+	            ->setHelp('The number of messages waiting in the mail queue.')
                 ->setValue((int) $mailQueueCache['queue_size']);
 
             if (isset($mailQueueCache['last_run'])) {

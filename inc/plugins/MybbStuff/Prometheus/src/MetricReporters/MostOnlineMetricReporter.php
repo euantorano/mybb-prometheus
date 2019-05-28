@@ -26,7 +26,7 @@ class MostOnlineMetricReporter extends CacheBasedMetricReporter
 
         if (isset($mostOnlineCache['numusers'])) {
             $metric = (new Metric('mybb_most_online', Metric::TYPE_GAUGE))
-                ->setHelp('The maximum number of users that have been online concurrently')
+	            ->setHelp('The maximum number of users that have been online concurrently.')
                 ->setValue((int) $mostOnlineCache['numusers']);
 
             if (isset($mostOnlineCache['time'])) {

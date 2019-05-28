@@ -26,7 +26,7 @@ class AwaitingActivationMetricReporter extends CacheBasedMetricReporter
 
         if (isset($awaitingActivationCache['users'])) {
             $metric = (new Metric('mybb_awaiting_activation_users', Metric::TYPE_GAUGE))
-                ->setHelp('The number of users awaiting activation')
+	            ->setHelp('The number of users awaiting activation.')
                 ->setValue((int) $awaitingActivationCache['users']);
 
             if (isset($awaitingActivationCache['time'])) {

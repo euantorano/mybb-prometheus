@@ -44,6 +44,6 @@ scrape_configs:
       password: 'change_me-123'
     static_configs:
       - targets:
-        - 'http://mybb.dev'
+        - 'mybb.dev'
 
 ```

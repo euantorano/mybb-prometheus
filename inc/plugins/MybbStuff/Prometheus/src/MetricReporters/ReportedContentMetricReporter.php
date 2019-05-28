@@ -26,13 +26,13 @@ class ReportedContentMetricReporter extends CacheBasedMetricReporter
 
         if (isset($reportedContentCache['unread'])) {
             $metrics['mybb_reported_content_unread'] = (new Metric('mybb_reported_content_unread', Metric::TYPE_GAUGE))
-                ->setHelp('The number of unread reports')
+	            ->setHelp('The number of unread reports.')
                 ->setValue((int) $reportedContentCache['unread']);
         }
 
         if (isset($reportedContentCache['total'])) {
             $metrics['mybb_reported_content_total'] = (new Metric('mybb_reported_content_total', Metric::TYPE_GAUGE))
-                ->setHelp('The total number of reports')
+	            ->setHelp('The total number of reports.')
                 ->setValue((int) $reportedContentCache['total']);
         }
 

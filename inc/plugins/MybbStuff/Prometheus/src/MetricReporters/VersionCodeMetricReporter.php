@@ -26,7 +26,7 @@ class VersionCodeMetricReporter extends CacheBasedMetricReporter
 
         if (isset($versionCache['version_code'])) {
             $metrics['mybb_version_code'] = (new Metric('mybb_version_code', Metric::TYPE_UNTYPED))
-                ->setHelp('The version code of the currently installed MyBB version')
+	            ->setHelp('The version code of the currently installed MyBB version.')
                 ->setValue($versionCache['version_code']);
         }
 

@@ -189,13 +189,13 @@ final class Metric
 
         $str .= "# TYPE {$this->name} {$this->type}\n";
 
-        $str .= "{$this->name}";
+	    $str .= "{$this->name} {$this->value}";
 
         if (!is_null($this->timeStamp)) {
             $str .= " {$this->timeStamp}";
         }
 
-        $str .= "\n\n";
+	    $str .= "\n";
 
         return $str;
     }

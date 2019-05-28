@@ -3,11 +3,11 @@
 use MybbStuff\Core\ClassLoader;
 use MybbStuff\Prometheus\MetricReporterRegistry;
 use MybbStuff\Prometheus\MetricReporters\{AwaitingActivationMetricReporter,
-    BoardStatsMetricReporter,
-    MailQueueMetricReporter,
-    MostOnlineMetricReporter,
-    ReportedContentMetricReporter,
-    VersionCodeMetricReporter};
+	BoardStatsMetricReporter,
+	MailQueueMetricReporter,
+	MostOnlineMetricReporter,
+	ReportedContentMetricReporter,
+	VersionCodeMetricReporter};
 
 if (!defined('IN_MYBB')) {
     die('Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.');
@@ -23,7 +23,7 @@ require_once MYBBSTUFF_CORE_PATH . '/src/ClassLoader.php';
 $classLoader = ClassLoader::getInstance();
 $classLoader->registerNamespace(
     'MybbStuff\\Prometheus\\',
-    PROMETHEUS_PLUGIN_PATH . 'src/',
+	PROMETHEUS_PLUGIN_PATH . '/src/',
 );
 $classLoader->register();
 

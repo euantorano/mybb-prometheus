@@ -31,7 +31,7 @@ final class ClassLoader
 
     public function registerNamespace(string $nameSpacePrefix, string $basePath): void
     {
-        if (substr($nameSpacePrefix, -2) !== '\\') {
+	    if (substr($nameSpacePrefix, -1) !== '\\') {
             $nameSpacePrefix .= '\\';
         }
 
@@ -52,7 +52,7 @@ final class ClassLoader
 
             $relative = substr($class, $len);
 
-            $file = $basePath . str_replace('\\', '/', $relative) . 'php';
+	        $file = $basePath . str_replace('\\', '/', $relative) . '.php';
 
             if (file_exists($file)) {
                 require $file;

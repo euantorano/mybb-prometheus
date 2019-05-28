@@ -10,35 +10,35 @@ class BoardStatsMetricReporter extends CacheBasedMetricReporter
     private static $gaugeStats = [
         'numthreads' => [
             'name' => 'mybb_stats_num_threads',
-            'help' => 'The number of threads in all forums',
+	        'help' => 'The number of threads in all forums.',
         ],
         'numunapprovedthreads' => [
             'name' => 'mybb_stats_num_unapproved_threads',
-            'help' => 'The number of unapproved threads in all forums',
+	        'help' => 'The number of unapproved threads in all forums.',
         ],
         'numdeletedthreads' => [
             'name' => 'mybb_stats_num_deleted_threads',
-            'help' => 'The number of deleted threads in all forums',
+	        'help' => 'The number of deleted threads in all forums.',
         ],
         'numposts' => [
             'name' => 'mybb_stats_num_posts',
-            'help' => 'The number of posts in all forums',
+	        'help' => 'The number of posts in all forums.',
         ],
         'numunapprovedposts' => [
             'name' => 'mybb_stats_num_unapproved_posts',
-            'help' => 'The number of unapproved posts in all forums',
+	        'help' => 'The number of unapproved posts in all forums.',
         ],
         'numdeletedposts' => [
             'name' => 'mybb_stats_num_deleted_posts',
-            'help' => 'The number of deleted posts in all forums',
+	        'help' => 'The number of deleted posts in all forums.',
         ],
         'numusers' => [
             'name' => 'mybb_stats_num_users',
-            'help' => 'The number of registered users',
+	        'help' => 'The number of registered users.',
         ],
         'lastuid' => [
             'name' => 'mybb_stats_last_user_id',
-            'help' => 'The ID of the last registered user',
+	        'help' => 'The ID of the last registered user.',
         ],
     ];
 
