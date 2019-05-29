@@ -37,7 +37,7 @@ You must configure Prometheus to add a new scrape config. Below is an example sc
 ```yaml
 scrape_configs:
   - job_name: 'mybb'
-    metrics_path: '/misc.php?action=prometheus_metrics'
+    metrics_path: '/prometheus_metrics.php'
     scrape_interval: '5s'
     basic_auth:
       username: 'prometheus'
@@ -45,5 +45,6 @@ scrape_configs:
     static_configs:
       - targets:
         - 'mybb.dev'
-
 ```
+
+Obviously, you should change the target to your actual IP address/hostname and the username and password to those set as per the above section [`Configuring the plugin`](#configuring-the-plugin).

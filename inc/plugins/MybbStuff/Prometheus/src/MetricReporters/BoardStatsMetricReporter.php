@@ -67,12 +67,6 @@ class BoardStatsMetricReporter extends CacheBasedMetricReporter
             }
         }
 
-        if (isset($statsCache['lastusername'])) {
-            $metrics['mybb_last_user_name'] = (new Metric('mybb_last_user_name', Metric::TYPE_UNTYPED))
-                ->setHelp('The username of the last registered user')
-                ->setValue($statsCache['lastusername']);
-        }
-
         return $metrics;
     }
 }
