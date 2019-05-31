@@ -18,7 +18,7 @@ function prometheus_verify_credentials(): bool
 		$user = $_ENV['PROMETHEUS_USER'];
 	}
 
-	if (!isset($_ENV['PROMETHEUS_PASSWORD'])) {
+	if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])) {
 		return false;
 	}
 
@@ -26,8 +26,7 @@ function prometheus_verify_credentials(): bool
 		hash_equals($_ENV['PROMETHEUS_PASSWORD'], $_SERVER['PHP_AUTH_PW']);
 }
 
-if (prometheus_needs_basic_auth() &&
-	(!isset($_SERVER['PHP_AUTH_USER']) || !prometheus_verify_credentials())) {
+if (prometheus_needs_basic_auth() && !prometheus_verify_credentials()) {
 	header('WWW-Authenticate: Basic realm="Prometheus Metrics"');
 	header('HTTP/1.0 401 Unauthorized');
 
