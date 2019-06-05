@@ -37,11 +37,13 @@ You must configure Prometheus to add a new scrape config. Below is an example sc
 ```yaml
 scrape_configs:
   - job_name: 'mybb'
-    metrics_path: '/prometheus_metrics.php'
+    metrics_path: '/misc.php'
     scrape_interval: '5s'
     basic_auth:
       username: 'prometheus'
       password: 'change_me-123'
+    params:
+      action: ['prometheus_metrics']
     static_configs:
       - targets:
         - 'mybb.dev'
