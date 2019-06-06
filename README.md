@@ -20,6 +20,17 @@ This plugin currently reports the following set of metrics:
 - Number of deleted posts in all forums
 - Number of registered users
 - ID of the last registered user
+- Total number of online users
+- Number of online members
+- Number of online bots
+- Number of online guests
+- Posts per day
+- Threads per day
+- Members per day
+- Posts per member
+- Threads per member
+- Replies per thread
+- Percentage of users who have posted
 
 ## Configuring the plugin
 

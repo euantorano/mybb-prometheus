@@ -6,6 +6,7 @@ use MybbStuff\Prometheus\MetricReporters\{AwaitingActivationMetricReporter,
 	BoardStatsMetricReporter,
 	MailQueueMetricReporter,
 	MostOnlineMetricReporter,
+	OnlineUsersMetricReporter,
 	ReportedContentMetricReporter,
 	VersionCodeMetricReporter};
 
@@ -122,7 +123,7 @@ function prometheus_verify_credentials(): bool
 $plugins->add_hook('misc_start', 'prometheus_metrics');
 function prometheus_metrics(): void
 {
-	global $mybb, $cache, $plugins;
+	global $mybb, $cache, $db, $plugins;
 
 	if ($mybb->get_input('action', MyBB::INPUT_STRING) !== 'prometheus_metrics') {
 		return;
@@ -138,7 +139,7 @@ function prometheus_metrics(): void
 	http_response_code(200);
 	header("Content-Type: text/plain; version=0.0.4");
 
-	$registry = prometheus_get_default_metric_registry($cache);
+	$registry = prometheus_get_default_metric_registry($mybb, $cache, $db);
 
 	$plugins->run_hooks('prometheus_metrics_start', $registry);
 
@@ -151,14 +152,15 @@ function prometheus_metrics(): void
 	exit();
 }
 
-function prometheus_get_default_metric_registry(datacache $cache): MetricReporterRegistry
+function prometheus_get_default_metric_registry(MyBB $mybb, datacache $cache, DB_Base $db): MetricReporterRegistry
 {
     $registry = MetricReporterRegistry::getInstance();
 
     $registry->addMetricReporter(new AwaitingActivationMetricReporter($cache));
-    $registry->addMetricReporter(new BoardStatsMetricReporter($cache));
+    $registry->addMetricReporter(new BoardStatsMetricReporter($mybb, $db, $cache));
     $registry->addMetricReporter(new MailQueueMetricReporter($cache));
     $registry->addMetricReporter(new MostOnlineMetricReporter($cache));
+    $registry->addMetricReporter(new OnlineUsersMetricReporter($mybb, $db, $cache));
     $registry->addMetricReporter(new ReportedContentMetricReporter($cache));
     $registry->addMetricReporter(new VersionCodeMetricReporter($cache));
 
