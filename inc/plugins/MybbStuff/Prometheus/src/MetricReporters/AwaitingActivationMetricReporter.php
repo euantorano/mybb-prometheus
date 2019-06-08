@@ -30,7 +30,7 @@ class AwaitingActivationMetricReporter extends CacheBasedMetricReporter
                 ->setValue((int) $awaitingActivationCache['users']);
 
             if (isset($awaitingActivationCache['time'])) {
-                $metric->setTimeStamp((int) $awaitingActivationCache['time']);
+                $metric->setTimeStamp((int) $awaitingActivationCache['time'] * 1000);
             }
 
             $metrics['mybb_awaiting_activation_users'] = $metric;

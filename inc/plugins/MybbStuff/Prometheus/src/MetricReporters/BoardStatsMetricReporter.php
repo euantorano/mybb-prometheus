@@ -166,12 +166,12 @@ class BoardStatsMetricReporter extends CacheBasedMetricReporter
 	        }
         }
 
-		$this->getStatisticsMetrics($metrics);
+		$this->getStatisticsMetrics($metrics, $statsCache);
 
         return $metrics;
     }
 
-    private function getStatisticsMetrics(array &$metrics): void
+    private function getStatisticsMetrics(array &$metrics, array $statsCache): void
     {
 	    $statisticsCache = $this->cache->read('statistics');
 
@@ -190,7 +190,7 @@ class BoardStatsMetricReporter extends CacheBasedMetricReporter
 	    }
 
 	    $percentageOfUsersWhoHavePosted = round(
-	    	(((int) $statisticsCache['posters'] / (int)$statisticsCache['numusers']) * 100),
+	    	(((int) $statisticsCache['posters'] / (int)$statsCache['numusers']) * 100),
 		    2
 	    );
 
@@ -198,6 +198,6 @@ class BoardStatsMetricReporter extends CacheBasedMetricReporter
 		    (new Metric('mybb_stats_percentage_of_users_who_have_posted', Metric::TYPE_GAUGE))
 		        ->setHelp('The percentage of users who have posted.')
 		        ->setValue($percentageOfUsersWhoHavePosted)
-		        ->setTimeStamp((int) $statisticsCache['time']);
+		        ->setTimeStamp((int) $statisticsCache['time'] * 1000);
     }
 }

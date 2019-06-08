@@ -30,7 +30,7 @@ class MailQueueMetricReporter extends CacheBasedMetricReporter
                 ->setValue((int) $mailQueueCache['queue_size']);
 
             if (isset($mailQueueCache['last_run'])) {
-                $metric->setTimeStamp((int) $mailQueueCache['last_run']);
+                $metric->setTimeStamp((int) $mailQueueCache['last_run'] * 1000);
             }
 
             $metrics['mybb_mail_queue_size'] = $metric;

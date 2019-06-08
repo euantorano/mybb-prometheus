@@ -30,7 +30,7 @@ class MostOnlineMetricReporter extends CacheBasedMetricReporter
                 ->setValue((int) $mostOnlineCache['numusers']);
 
             if (isset($mostOnlineCache['time'])) {
-                $metric->setTimeStamp((int) $mostOnlineCache['time']);
+                $metric->setTimeStamp((int) $mostOnlineCache['time'] * 1000);
             }
 
             $metrics['mybb_most_online'] = $metric;

@@ -81,23 +81,19 @@ SQL;
 
 		$metrics['mybb_online_users_total'] = (new Metric('mybb_online_users_total', Metric::TYPE_GAUGE))
 			->setHelp('The total number of currently online users.')
-			->setValue($numOnlineUsers + $numOnlineBots + $numOnlineGuests)
-			->setTimeStamp(TIME_NOW);
+			->setValue($numOnlineUsers + $numOnlineBots + $numOnlineGuests);
 
 		$metrics['mybb_online_users_registered'] = (new Metric('mybb_online_users_registered', Metric::TYPE_GAUGE))
 			->setHelp('The number of currently online users that are registered users.')
-			->setValue($numOnlineUsers)
-			->setTimeStamp(TIME_NOW);
+			->setValue($numOnlineUsers);
 
 		$metrics['mybb_online_users_bots'] = (new Metric('mybb_online_users_bots', Metric::TYPE_GAUGE))
 			->setHelp('The number of currently online users that are bots.')
-			->setValue($numOnlineBots)
-			->setTimeStamp(TIME_NOW);
+			->setValue($numOnlineBots);
 
 		$metrics['mybb_online_users_guests'] = (new Metric('mybb_online_users_guests', Metric::TYPE_GAUGE))
 			->setHelp('The number of currently online users that are guests.')
-			->setValue($numOnlineGuests)
-			->setTimeStamp(TIME_NOW);
+			->setValue($numOnlineGuests);
 
 		return $metrics;
 	}
